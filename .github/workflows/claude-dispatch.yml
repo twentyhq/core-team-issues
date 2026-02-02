@@ -1,0 +1,41 @@
+name: Dispatch @claude to Twenty
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+
+jobs:
+  dispatch:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build payload
+        id: payload
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const payload = {
+              issue_number: context.issue.number,
+              issue_url: context.payload.issue.html_url,
+              issue_title: context.payload.issue.title,
+              comment_id: context.payload.comment?.id || 0,
+              comment_url: context.payload.comment?.html_url || '',
+              comment_body: context.payload.comment?.body || '',
+              issue_body: context.payload.issue.body || '',
+              sender: context.payload.sender.login,
+              event_name: context.eventName,
+              repo_full_name: context.payload.repository.full_name
+            };
+            core.setOutput('json', JSON.stringify(payload));
+
+      - name: Dispatch to twenty
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.TWENTY_DISPATCH_TOKEN }}
+          repository: twentyhq/twenty
+          event-type: claude-core-team-issues
+          client-payload: ${{ steps.payload.outputs.json }}
