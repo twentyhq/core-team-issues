@@ -23,29 +23,44 @@ jobs:
       )
     runs-on: ubuntu-latest
     steps:
-      - name: Build payload
-        id: payload
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const payload = {
-              issue_number: context.issue.number,
-              issue_url: context.payload.issue.html_url,
-              issue_title: context.payload.issue.title,
-              comment_id: context.payload.comment?.id || 0,
-              comment_url: context.payload.comment?.html_url || '',
-              comment_body: context.payload.comment?.body || '',
-              issue_body: context.payload.issue.body || '',
-              sender: context.payload.sender.login,
-              event_name: context.eventName,
-              repo_full_name: context.payload.repository.full_name
-            };
-            core.setOutput('json', JSON.stringify(payload));
-
       - name: Dispatch to twenty
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.TWENTY_DISPATCH_TOKEN }}
-          repository: twentyhq/twenty
-          event-type: claude-core-team-issues
-          client-payload: ${{ steps.payload.outputs.json }}
+        env:
+          GH_TOKEN: ${{ secrets.TWENTY_DISPATCH_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+          COMMENT_URL: ${{ github.event.comment.html_url }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          SENDER: ${{ github.event.sender.login }}
+          EVENT_NAME: ${{ github.event_name }}
+          REPO_FULL_NAME: ${{ github.event.repository.full_name }}
+        run: |
+          jq -n \
+            --argjson issue_number "${ISSUE_NUMBER:-0}" \
+            --arg     issue_url "$ISSUE_URL" \
+            --arg     issue_title "$ISSUE_TITLE" \
+            --arg     issue_body "$ISSUE_BODY" \
+            --argjson comment_id "${COMMENT_ID:-0}" \
+            --arg     comment_url "$COMMENT_URL" \
+            --arg     comment_body "$COMMENT_BODY" \
+            --arg     sender "$SENDER" \
+            --arg     event_name "$EVENT_NAME" \
+            --arg     repo_full_name "$REPO_FULL_NAME" \
+            '{
+              event_type: "claude-core-team-issues",
+              client_payload: {
+                issue_number: $issue_number,
+                issue_url: $issue_url,
+                issue_title: $issue_title,
+                issue_body: $issue_body,
+                comment_id: $comment_id,
+                comment_url: $comment_url,
+                comment_body: $comment_body,
+                sender: $sender,
+                event_name: $event_name,
+                repo_full_name: $repo_full_name
+              }
+            }' \
+          | gh api --method POST /repos/twentyhq/twenty/dispatches --input -
