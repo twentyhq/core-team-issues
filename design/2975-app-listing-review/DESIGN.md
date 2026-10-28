@@ -6,22 +6,21 @@ The images in `images/` are design mockups, not screenshots of shipped UI.
 
 ## Principles
 
-- Every app in the marketplace is reviewed by Twenty. **Listed** means reviewed and visible to every workspace. There is no unreviewed tier inside the marketplace.
-- **Official** is a badge on top of a listed app: the reference app for an integration (one official Slack app, one official WhatsApp app). An admin grants it; it replaces today's `isVetted`.
+- **Listed** means reviewed by Twenty. Unlisted apps stay installable with a share link.
+- **Official** is a badge on top of a listed app: the reference app for an integration (one official Slack app, one official WhatsApp app). An admin grants it; it replaces today's `isVetted` (core-team-issues#3119).
 - Listing is decided once per app (app-level criteria). Every published version of a listed app is then reviewed on its own (version-level criteria) and never inherits a previous approval.
 - Automated analysis prepares every decision; a server admin stamps it. Nothing is approved without a human.
-- The marketplace serves the latest approved version compatible with the server, never the latest published one (issue 2976).
-- Unlisted apps stay installable with a share link, behind a "not reviewed by Twenty" warning.
 - The admin and publisher app pages share one Distribution tab and one version page; only the actions differ.
+
+How the marketplace shows listed and official apps, and which version it installs (issue 2976), is not decided yet and is out of this design.
 
 ## Naming
 
 | Today | New | Meaning |
 | --- | --- | --- |
-| `isListed` (admin switch "Allow installation") | `listingStatus`: `UNLISTED`, `LISTING_REQUESTED`, `LISTED`, `DECLINED`, `DELISTED` | Reviewed and visible in the marketplace. |
-| `isVetted` (admin switch "Vetted") | `isOfficial` | Official badge, shown first. Only on listed apps. |
-| `MARKETPLACE_VETTED_APPLICATIONS` | `MARKETPLACE_OFFICIAL_APPLICATIONS` | Seeds `isOfficial` and orders official apps. |
-| "Vetted only" filter, "not vetted" banners | "Official only" filter (off by default); "not reviewed by Twenty" banner on unlisted apps | |
+| `isListed` (admin switch "Allow installation") | `listingStatus`: `UNLISTED`, `LISTING_REQUESTED`, `LISTED`, `DECLINED`, `DELISTED` | Reviewed by Twenty. |
+| `isVetted` (admin switch "Vetted") | `isOfficial` | Official badge. Only on listed apps. |
+| `MARKETPLACE_VETTED_APPLICATIONS` | `MARKETPLACE_OFFICIAL_APPLICATIONS` | Seeds `isOfficial`. |
 
 "Vetting" stays the name of the review process in docs; it is no longer a status.
 
@@ -35,12 +34,12 @@ End to end:
 2. The catalog sync records the version with its sha512 integrity and provenance.
 3. If the app is listed and auto-submit is on, a review is created; otherwise the publisher submits from the Versions table.
 4. The analysis job verifies the artifact, runs the scanners and the agent review, and stores the report. The review moves to "Needs decision" and appears in the admin review queue.
-5. An admin approves or rejects with a reason. Approval refreshes the catalog cache, and installs and auto-upgrades move to that version.
+5. An admin approves or rejects with a reason. The decision refreshes the catalog cache.
 6. The publisher gets the decision and the reason by email and in the Versions table. A rejected version is final: the fix is a new version, which starts again at step 2.
 
 ## Admin experience
 
-Admin Panel > Apps: the review queue sits between the catalog actions and the registrations table. The Vetted column becomes Listing (status) plus the served version, and official apps carry the badge next to their name.
+Admin Panel > Apps: the review queue sits between the catalog actions and the registrations table. The Vetted column becomes Listing (status) plus the latest approved version, and official apps carry the badge next to their name.
 
 ![Admin Apps tab](images/admin-apps.png)
 
@@ -62,17 +61,11 @@ Once the app is listed, the publisher sees the same listing card (with a read-on
 
 ![Publisher Distribution tab, listed](images/distribution-publisher.png)
 
-## Marketplace
-
-All listed apps show without a filter. Official apps come first with a badge ("Official app" tooltip). Install and upgrade resolve to the latest approved version. The owner workspace sees a note when a newer version awaits review. A shared link to an unlisted app shows a warning.
-
-![Marketplace](images/marketplace.png)
-
 ## Data model
 
 | Change | Purpose |
 | --- | --- |
-| `applicationRegistration.listingStatus` | Replaces `isListed`. The catalog query filters on `LISTED`. |
+| `applicationRegistration.listingStatus` | Replaces `isListed`. |
 | `applicationRegistration.isOfficial` | Replaces `isVetted`. A validation rejects it unless the app is `LISTED`. |
 | `applicationRegistration.autoSubmitNewVersions` | Publisher preference, default `true` once listed. |
 | `applicationRegistrationVersion.integrity`, `.provenance` | sha512 from the registry (or computed for tarballs) and the attestation facts (repository, workflow, commit). |
@@ -81,7 +74,7 @@ All listed apps show without a filter. Official apps come first with a badge ("O
 | `applicationRegistrationVersionAnalysis` | One row per analysis run: trigger (system, admin, publisher), status, artifact integrity analyzed, provenance verified, model, rubric version, summary, recommendation, findings, permission diff, scanner outputs. Immutable once completed. |
 | `applicationReviewEvent` | Activity log of every transition: subject, event, actor type and id, reason, timestamp. |
 
-Legacy data: `isListed = true` becomes `LISTED`, with the current `latestAvailableVersion` approved by `SYSTEM` so the marketplace keeps serving it. `isVetted = true` becomes `isOfficial = true`. Only npm-sourced apps can be listed, as today.
+Legacy data: `isListed = true` becomes `LISTED`, with the current `latestAvailableVersion` approved by `SYSTEM`. `isVetted = true` becomes `isOfficial = true`. Only npm-sourced apps can be listed, as today.
 
 ## Automated analysis
 
@@ -112,7 +105,7 @@ Jobs and hooks: `ApplicationVersionAnalysisJob`; catalog sync and tarball publis
 `mockups/` holds the sources of every image except `analysis-pipeline.png`. From this folder:
 
 ```bash
-cd mockups && python3 gen-states.py && node render.js "$PWD" ../images admin-apps distribution-admin distribution-publisher distribution-publisher-unlisted version-review marketplace workflow-states
+cd mockups && python3 gen-states.py && node render.js "$PWD" ../images admin-apps distribution-admin distribution-publisher distribution-publisher-unlisted version-review workflow-states
 ```
 
 `render.js` needs Playwright; the icons load from jsDelivr.
