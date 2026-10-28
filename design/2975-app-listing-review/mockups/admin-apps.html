@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"></head><body>
+<div class="main" data-active="Admin Panel">
+  <div class="crumbs">Other <i class="ti ti-chevron-right"></i> <b>Admin Panel</b></div>
+  <div class="head">Admin Panel</div>
+  <div class="tabs">
+    <div class="tab"><i class="ti ti-settings"></i>General</div>
+    <div class="tab on"><i class="ti ti-apps"></i>Apps <span class="tag blue" style="border-radius:8px;padding:0 6px">3</span></div>
+    <div class="tab"><i class="ti ti-sparkles"></i>AI</div>
+    <div class="tab"><i class="ti ti-variable"></i>Config</div>
+    <div class="tab"><i class="ti ti-heart-rate-monitor"></i>Health</div>
+    <div class="tab"><i class="ti ti-building"></i>Organization</div>
+  </div>
+  <div class="content">
+    <h2>General</h2>
+    <p class="desc">Manage the marketplace application catalog</p>
+    <span class="btn"><i class="ti ti-refresh"></i>Synchronize catalog</span>
+
+    <div class="new" data-new="NEW" style="margin-top:40px">
+      <h2 style="margin-top:0;justify-content:space-between">Review queue <span class="btn small" style="font-weight:400"><i class="ti ti-filter"></i>Needs decision</span></h2>
+      <p class="desc">Listing requests and version submissions awaiting a decision. The automated analysis runs before a request lands here.</p>
+      <table>
+        <tr><th>App</th><th>Request</th><th>Publisher</th><th>Age</th><th>Analysis</th><th>Status</th><th></th></tr>
+        <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#e8590c">P</span>Postcard Sender <span class="muted">v1.2.0</span></span></td><td><span class="tag purple">Listing</span></td><td>Acme</td><td>2d</td><td><span class="tag orange">2 warnings</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+        <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#2f9e44">C</span>Call recorder <span class="muted">v2.3.0</span></span></td><td><span class="tag gray">Version</span></td><td>Twenty</td><td>5h</td><td><span class="green">Passed</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+        <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#7048e8">L</span>Linear sync <span class="muted">v0.9.4</span></span></td><td><span class="tag gray">Version</span></td><td>Nova Labs</td><td>1d</td><td><span class="tag red">1 blocking</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+        <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#4a154b">S</span>Slack <span class="muted">v1.8.1</span></span></td><td><span class="tag gray">Version</span></td><td>Twenty</td><td>12m</td><td class="muted"><i class="ti ti-loader-2"></i> Running</td><td class="muted dot">Analyzing</td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      </table>
+    </div>
+
+    <h2 style="margin-top:40px">All App Registrations</h2>
+    <p class="desc">All application registrations across the platform, including orphaned marketplace apps (42 matching)</p>
+    <div class="card" style="display:flex;align-items:center;gap:8px;padding:8px 10px;color:#999"><i class="ti ti-search"></i><span style="flex:1">Search registrations...</span><i class="ti ti-filter"></i></div>
+    <table style="margin-top:8px">
+      <tr><th>Name</th><th>Author</th><th class="new" data-new="CHANGED">Listing</th><th>Served version</th><th style="text-align:right">Installs</th><th style="text-align:right">Configured</th><th></th></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#2f9e44">C</span>Call recorder <i class="ti ti-rosette-discount-check-filled official" title="Official"></i></span></td><td>Twenty</td><td><span class="green">Listed</span></td><td class="mono">2.2.1</td><td style="text-align:right">1 204</td><td style="text-align:right"><span class="tag green">Yes</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#e8590c">P</span>Postcard Sender</span></td><td>Acme</td><td><span class="blue">Requested</span></td><td class="muted">—</td><td style="text-align:right">128</td><td style="text-align:right"><span class="tag green">Yes</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#4a154b">S</span>Slack <i class="ti ti-rosette-discount-check-filled official"></i></span></td><td>Twenty</td><td><span class="green">Listed</span></td><td class="mono">1.8.0</td><td style="text-align:right">2 318</td><td style="text-align:right"><span class="tag green">Yes</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#7048e8">L</span>Linear sync</span></td><td>Nova Labs</td><td><span class="green">Listed</span></td><td class="mono">0.9.3</td><td style="text-align:right">31</td><td style="text-align:right"><span class="tag green">Yes</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#868e96">W</span>Webhook relay</span></td><td>community</td><td class="muted">Unlisted</td><td class="muted">—</td><td style="text-align:right">9</td><td style="text-align:right"><span class="tag red">No</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#1c7ed6">E</span>Exa</span></td><td>Twenty</td><td><span class="tag orange"><i class="ti ti-alert-triangle"></i>Delisted</span></td><td class="muted">—</td><td style="text-align:right">640</td><td style="text-align:right"><span class="tag green">Yes</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+    </table>
+    <p class="note">The review queue now sits between the catalog actions and the registrations table. The Vetted column becomes Listing (Listed, Requested, Unlisted, Declined, Delisted) plus the version the marketplace serves; Official apps carry the badge next to their name.</p>
+  </div>
+</div>
+<script src="shell.js"></script>
+</body></html>
