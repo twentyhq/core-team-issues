@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"></head><body>
+<main class="panel" data-active="My apps" data-role="publisher">
+  <div class="bar">Developers <i class="ti ti-chevron-right"></i> <b>My apps</b><span class="sp"></span><span class="btn"><i class="ti ti-book"></i>Publishing guide</span></div>
+  <div class="body">
+    <h2>Publisher identity</h2>
+    <div class="card">
+      <div class="row"><span class="lab"><i class="ti ti-brand-github"></i>GitHub</span><span class="val">Signed in as <b>jane-acme</b> · member of <span class="mono">acme-dev</span></span><span class="tag green"><i class="ti ti-circle-check"></i>Verified</span></div>
+      <div class="row"><span class="lab">Organization</span><span class="val">Acme on Connect · 3 members can manage these apps</span></div>
+    </div>
+    <p class="note">One identity for every instance: an app is claimed once, here, instead of per workspace on each server.</p>
+    <h2>Apps</h2>
+    <p class="desc">Packages published to npm with the <span class="mono">twenty-app</span> keyword whose provenance points to a repository of <span class="mono">acme-dev</span>.</p>
+    <div class="card"><table>
+      <tr><th>App</th><th>Listing</th><th>Latest</th><th>Latest approved</th><th>Auto-submit</th><th></th></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#e8590c">P</span>Postcard Sender</span></td><td><span class="green dot">Listed</span></td><td class="mono">1.2.0 <span class="tag blue" style="font-family:Inter">In review</span></td><td class="mono">1.1.3</td><td><span class="switch"></span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#5c940d">I</span>Invoice OCR</span></td><td class="muted dot">Unlisted</td><td class="mono">0.4.0</td><td class="muted">—</td><td><span class="switch off"></span></td><td><span class="btn small">Request listing</span></td></tr>
+    </table></div>
+    <h2>Invoice OCR · listing requirements</h2>
+    <div class="card">
+      <div class="row"><span class="green"><i class="ti ti-circle-check"></i></span><span class="val">Claimed with npm provenance</span></div>
+      <div class="row"><span class="green"><i class="ti ti-circle-check"></i></span><span class="val">Listing manifest and README</span></div>
+      <div class="row"><span class="green"><i class="ti ti-circle-check"></i></span><span class="val">Pricing, privacy and terms</span></div>
+      <div class="row"><span class="orange"><i class="ti ti-circle-dashed"></i></span><span class="val">Support email or issue URL <span class="muted small">· add <span class="mono">emailSupport</span> to the manifest and publish a new version</span></span></div>
+      <div class="row"><span class="val"></span><span class="btn"><i class="ti ti-microscope"></i>Run self-check on 0.4.0</span><span class="btn primary" style="opacity:.45">Request listing</span></div>
+    </div>
+  </div>
+</main><script src="portal.js"></script></body></html>

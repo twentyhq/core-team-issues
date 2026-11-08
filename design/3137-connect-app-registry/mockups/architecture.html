@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
+<style>
+body { background: #fff; }
+.wrap { padding: 28px 32px; width: 1180px; box-sizing: border-box; }
+h1 { font-size: 18px; margin: 0 0 4px; }
+.cols { display: grid; grid-template-columns: 230px 1fr 260px; gap: 28px; margin-top: 22px; align-items: stretch; }
+.box { border: 1px solid #ebebeb; border-radius: 10px; padding: 12px 14px; background: #fff; }
+.box h3 { margin: 0 0 8px; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.box ul { margin: 0; padding-left: 16px; color: #666; line-height: 1.6; font-size: 12px; }
+.connect { border: 2px solid #1961ed; background: #f7faff; border-radius: 12px; padding: 14px; }
+.connect > h3 { color: #1961ed; font-size: 14px; margin: 0 0 2px; display: flex; gap: 6px; align-items: center; }
+.inner { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.inner .box { background: #fff; }
+.stack > * + * { margin-top: 12px; }
+.arrow { color: #1961ed; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; margin: 6px 0; }
+.lane { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+.feed { border: 1px dashed #18794e; background: #f3fbf6; }
+.feed h3 { color: #18794e; }
+.inst { display: flex; gap: 8px; align-items: center; padding: 7px 10px; border: 1px solid #ebebeb; border-radius: 8px; margin-top: 6px; font-size: 12px; }
+.legend2 { margin-top: 18px; display: flex; gap: 20px; color: #666; font-size: 12px; }
+</style></head><body><div class="wrap">
+<h1>Twenty Connect as the app registry</h1>
+<p class="desc">One authority writes listings and per-version decisions. Every instance reads the same signed feed, over outbound HTTPS only.</p>
+<div class="cols">
+  <div class="stack">
+    <div class="lane">Writers</div>
+    <div class="box"><h3><i class="ti ti-terminal-2"></i>Publishers</h3><ul><li><span class="mono">twenty app publish</span> → npm, with provenance</li><li>Sign in to connect.twenty.com with GitHub</li><li>Request listing, submit versions, self-check</li></ul></div>
+    <div class="box"><h3><i class="ti ti-shield-check"></i>Twenty reviewers</h3><ul><li>Members of the Twenty organization on Connect, with the <b>reviewer</b> role</li><li>Approve, reject, revoke</li></ul></div>
+    <div class="box"><h3><i class="ti ti-brand-npm"></i>npm registry</h3><ul><li>Packument: versions, <span class="mono">dist.integrity</span></li><li>Sigstore attestations</li><li>Tarballs (never re-hosted)</li></ul></div>
+  </div>
+  <div class="connect">
+    <h3><i class="ti ti-plug-connected"></i>Twenty Connect · Cloudflare Worker · connect.twenty.com</h3>
+    <div class="muted small">Same Worker, D1 and portal as licensing. New <span class="mono">app-registry</span> module and <span class="mono">/v1/apps</span> surface.</div>
+    <div class="inner">
+      <div class="box"><h3><i class="ti ti-refresh"></i>Ingestion <span class="chip">Cron Trigger · 10 min</span></h3><ul><li>npm search <span class="mono">keywords:twenty-app</span> + packuments</li><li>Records every version: integrity, provenance, manifest</li><li>Copies logo and gallery to R2</li></ul></div>
+      <div class="box"><h3><i class="ti ti-id-badge-2"></i>Publishers and claims</h3><ul><li>GitHub sign-in (Better Auth social provider)</li><li>Claim = provenance repo ∈ publisher's GitHub org</li><li>Not tied to any workspace</li></ul></div>
+      <div class="box"><h3><i class="ti ti-microscope"></i>Analysis <span class="chip">Cloudflare Workflow</span></h3><ul><li>Fetch tarball, check sha512 and attestation</li><li>Deterministic scanners</li><li>Agent review through the Connect AI gateway</li></ul></div>
+      <div class="box"><h3><i class="ti ti-checklist"></i>Reviews and event log <span class="chip">D1</span></h3><ul><li>Listing requests, version reviews, decisions, reasons</li><li>Append-only event log</li><li>Emails from noreply@connect.twenty.com</li></ul></div>
+    </div>
+    <div class="arrow" style="margin-top:12px"><i class="ti ti-arrow-down"></i>On each decision, and every 10 min: build, sign, upload</div>
+    <div class="box feed"><h3><i class="ti ti-rss"></i>Signed catalog feed · R2 + CDN</h3><ul><li><span class="mono">GET /v1/apps/catalog.json</span> · Ed25519 signature, <span class="mono">sequence</span>, <span class="mono">expiresAt</span></li><li><span class="mono">GET /v1/apps/catalog/head</span> · sequence only, polled every 5 min for fast revocations</li><li><span class="mono">GET /v1/apps/assets/&lt;sha256&gt;</span> · immutable logos and gallery</li></ul></div>
+  </div>
+  <div class="stack">
+    <div class="lane">Readers (twenty-server)</div>
+    <div class="box"><h3><i class="ti ti-cloud-download"></i>Catalog sync</h3><ul><li><span class="mono">ConnectRegistryCatalogSource</span> replaces npm search + unpkg</li><li>Verifies signature with the pinned public key, rejects older <span class="mono">sequence</span> or expired feed</li><li><span class="mono">listingStatus</span>, approved versions: read-only mirrors</li></ul></div>
+    <div class="box"><h3><i class="ti ti-download"></i>Install</h3><ul><li>Tarball from npm</li><li>Only a version in the feed, whose sha512 matches</li></ul></div>
+    <div class="inst"><i class="ti ti-cloud"></i>Twenty Cloud (every cluster)</div>
+    <div class="inst"><i class="ti ti-building"></i>Dedicated instances</div>
+    <div class="inst"><i class="ti ti-server"></i>Self-hosts</div>
+    <div class="inst"><i class="ti ti-plane-off"></i>Air-gapped: mirror of 1 file + assets</div>
+  </div>
+</div>
+<div class="legend2"><span><b style="color:#1961ed">Blue</b>: the only place a listing or version decision is written</span><span><b style="color:#18794e">Green</b>: the only contract instances depend on</span><span>Installs, OAuth clients, server variables and admin overrides stay local to each instance.</span></div>
+</div></body></html>
