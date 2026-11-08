@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"><style>
+body{background:#fff}.wrap{padding:28px 32px;width:1180px;box-sizing:border-box}
+h1{font-size:18px;margin:0 0 4px}
+.lanes{display:grid;grid-template-columns:150px repeat(7,1fr);margin-top:20px;border:1px solid #ebebeb;border-radius:10px;overflow:hidden}
+.lanes>div{border-top:1px solid #f1f1f1;border-left:1px solid #f1f1f1;padding:10px;min-height:54px;font-size:12px}
+.lh{font-weight:600;background:#fafafa;color:#666;border-left:0!important;display:flex;align-items:center;gap:6px}
+.hd{background:#fafafa;font-weight:600;color:#999;font-size:11px!important;text-transform:uppercase;letter-spacing:.04em;min-height:auto!important}
+.ev{border-radius:6px;padding:6px 8px;line-height:1.45}
+.b{background:#ebf1fd;color:#1c3f8a}.g{background:#e9f6ef;color:#145c3b}.o{background:#fdf0e3;color:#7a3a06}.p{background:#f3ebfc;color:#552687}.y{background:#f1f1f1;color:#444}
+</style></head><body><div class="wrap">
+<h1>Life of one version</h1>
+<p class="desc">From <span class="mono">twenty app publish</span> to an install on any instance. Typical latency: ingestion ≤ 10 min, analysis ~1 min, human decision, feed ≤ 1 min, instances ≤ 5 min (head poll).</p>
+<div class="lanes">
+  <div class="lh hd" style="background:#fafafa"></div><div class="hd">1 · Publish</div><div class="hd">2 · Ingest</div><div class="hd">3 · Submit</div><div class="hd">4 · Analyse</div><div class="hd">5 · Decide</div><div class="hd">6 · Publish feed</div><div class="hd">7 · Consume</div>
+  <div class="lh"><i class="ti ti-terminal-2"></i>Publisher</div><div><div class="ev y"><span class="mono">twenty app publish</span> from CI, npm provenance</div></div><div></div><div><div class="ev y">Auto-submit if listed, else "Submit" on Connect</div></div><div></div><div></div><div><div class="ev y">Email with the decision and reason</div></div><div></div>
+  <div class="lh"><i class="ti ti-brand-npm"></i>npm</div><div><div class="ev y">Packument, tarball, attestation</div></div><div></div><div></div><div><div class="ev y">Tarball download</div></div><div></div><div></div><div><div class="ev y">Tarball download</div></div>
+  <div class="lh"><i class="ti ti-plug-connected"></i>Connect</div><div></div><div><div class="ev b">Cron: new version → <span class="mono">appVersion</span> row with integrity, provenance, manifest; assets to R2</div></div><div><div class="ev b"><span class="mono">appVersionReview</span> SUBMITTED</div></div><div><div class="ev p">Workflow: sha512 + sigstore check, scanners, agent → <span class="mono">appVersionAnalysis</span></div></div><div><div class="ev b">NEEDS_DECISION → reviewer approves or rejects, event logged</div></div><div><div class="ev g">Rebuild <span class="mono">catalog.json</span>, sequence+1, sign, upload to R2, purge cache</div></div><div></div>
+  <div class="lh"><i class="ti ti-server"></i>Any instance</div><div></div><div></div><div></div><div></div><div></div><div></div><div><div class="ev g">Head poll sees new sequence → pull, verify signature, upsert registrations and versions → install checks sha512</div></div>
+</div>
+<p class="desc" style="margin-top:14px"><b>Revocation</b> follows the same path from step 5: the version leaves <span class="mono">versions</span>, enters <span class="mono">revokedVersions</span>, and every instance shows the upgrade banner within one head poll.</p>
+</div></body></html>

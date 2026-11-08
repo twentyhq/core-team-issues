@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"></head><body>
+<main class="panel" data-active="Review queue" data-role="reviewer">
+  <div class="bar">App registry <i class="ti ti-chevron-right"></i> <b>Review queue</b></div>
+  <div class="body">
+    <div class="kpis">
+      <div class="kpi"><div class="muted small">Needs decision</div><div class="v">4</div></div>
+      <div class="kpi"><div class="muted small">Analyzing</div><div class="v">1</div></div>
+      <div class="kpi"><div class="muted small">Listed apps</div><div class="v">38</div></div>
+      <div class="kpi"><div class="muted small">Feed</div><div class="v" style="font-size:14px;margin-top:8px"><span class="green dot">#1 842</span> <span class="muted small">· 3 min ago</span></div></div>
+    </div>
+    <h2 style="justify-content:space-between">Waiting for a decision <span class="btn small" style="font-weight:400"><i class="ti ti-filter"></i>All requests <i class="ti ti-chevron-down muted"></i></span></h2>
+    <p class="desc">Listing requests and version submissions from every publisher. Each version is analysed once and decided once, for every Twenty instance.</p>
+    <div class="card"><table>
+      <tr><th>App</th><th>Request</th><th>Publisher</th><th>Waiting</th><th>Analysis</th><th>Status</th><th></th></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#e8590c">P</span>Postcard Sender <span class="muted mono">1.2.0</span></span></td><td><span class="tag purple">Listing</span></td><td><i class="ti ti-brand-github muted"></i> acme-dev</td><td>2d</td><td><span class="tag orange">2 warnings</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#2f9e44">C</span>Call recorder <span class="muted mono">2.3.0</span></span></td><td><span class="tag gray">Version</span></td><td><i class="ti ti-brand-github muted"></i> twentyhq</td><td>5h</td><td><span class="green">Passed</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#7048e8">L</span>Linear sync <span class="muted mono">0.9.4</span></span></td><td><span class="tag gray">Version</span></td><td><i class="ti ti-brand-github muted"></i> nova-labs</td><td>1d</td><td><span class="tag red">1 blocking</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#0b7285">H</span>HubSpot import <span class="muted mono">1.0.0</span></span></td><td><span class="tag purple">Listing</span></td><td><i class="ti ti-brand-github muted"></i> hs-tools</td><td>3d</td><td><span class="green">Passed</span></td><td><span class="blue dot">Needs decision</span></td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+      <tr><td><span style="display:flex;gap:8px;align-items:center"><span class="logo" style="background:#4a154b">S</span>Slack <span class="muted mono">1.8.1</span></span></td><td><span class="tag gray">Version</span></td><td><i class="ti ti-brand-github muted"></i> twentyhq</td><td>12m</td><td class="muted"><i class="ti ti-loader-2"></i> Running</td><td class="muted dot">Analyzing</td><td class="muted"><i class="ti ti-chevron-right"></i></td></tr>
+    </table></div>
+    <h2>Recently decided</h2>
+    <div class="card"><table>
+      <tr><th>App</th><th>Decision</th><th>By</th><th>When</th><th>In feed</th></tr>
+      <tr><td>Slack <span class="muted mono">1.8.0</span></td><td><span class="green dot">Approved</span></td><td>martin@twenty.com</td><td>Today 10:12</td><td class="mono">#1 842</td></tr>
+      <tr><td>Webhook relay <span class="muted mono">0.3.1</span></td><td><span class="red dot">Rejected</span> <span class="muted small">· sends record data to an undeclared host</span></td><td>felix@twenty.com</td><td>Yesterday</td><td class="muted">—</td></tr>
+      <tr><td>Exa <span class="muted mono">1.4.2</span></td><td><span class="orange dot">Revoked</span> <span class="muted small">· GHSA-xxxx advisory</span></td><td>charles@twenty.com</td><td>Nov 5</td><td class="mono">#1 833</td></tr>
+    </table></div>
+    <p class="note">Reviewers are members of the Twenty organization on Connect with the new "reviewer" role. No instance admin decides a listing anymore.</p>
+  </div>
+</main><script src="portal.js"></script></body></html>

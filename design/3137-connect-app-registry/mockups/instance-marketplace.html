@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"></head><body>
+<div class="main" data-active="Apps">
+  <div class="crumbs">Workspace <i class="ti ti-chevron-right"></i> Apps <i class="ti ti-chevron-right"></i> <b>Postcard Sender</b></div>
+  <div class="content">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;gap:14px;align-items:center">
+        <span class="logo" style="background:#e8590c;width:48px;height:48px;font-size:22px;border-radius:10px">P</span>
+        <div style="flex:1"><div style="font-size:16px;font-weight:600">Postcard Sender</div>
+        <div class="muted small" style="margin-top:4px">By <b style="color:#333;font-weight:500">Acme</b> <i class="ti ti-brand-github"></i> acme-dev · Version <b style="color:#333;font-weight:500">1.1.3</b> · <span class="new" data-new="FROM FEED" style="outline-offset:3px"><span class="green"><i class="ti ti-shield-check"></i> Reviewed by Twenty on Sep 4, 2026</span></span></div></div>
+        <span class="btn primary"><i class="ti ti-download"></i>Install v1.1.3</span>
+      </div>
+    </div>
+    <h2>Version history</h2>
+    <p class="desc">Same list on every Twenty instance. Only reviewed versions can be installed or upgraded to.</p>
+    <div class="card"><table>
+      <tr><th>Version</th><th>Reviewed</th><th>Integrity</th><th>Requires</th></tr>
+      <tr><td class="mono">1.1.3</td><td><span class="green dot">Sep 4, 2026</span></td><td class="mono small">sha512-u7K…0g== <i class="ti ti-check green"></i></td><td class="mono">Twenty ≥ 2.50</td></tr>
+      <tr><td class="mono">1.1.0</td><td><span class="orange dot">Revoked Sep 4</span> <span class="muted small">· vulnerable dependency</span></td><td class="mono small muted">sha512-a0E…3A==</td><td class="mono">Twenty ≥ 2.48</td></tr>
+    </table></div>
+    <div class="banner small orange" style="background:#fdf0e3;margin-top:16px"><i class="ti ti-alert-triangle"></i><span>Workspace <b>Acme Sales</b> runs revoked 1.1.0. Upgrade to 1.1.3, reviewed by Twenty.</span><span class="btn small" style="margin-left:auto">Upgrade</span></div>
+    <p class="note">The card, logo, gallery and review facts all come from the signed feed. The tarball still comes from npm and is installed only if its sha512 matches the feed.</p>
+  </div>
+</div>
+<script src="shell.js"></script></body></html>
